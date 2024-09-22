@@ -1,87 +1,97 @@
 # CryptoClustering
 
-In this project, we leverage Python and unsupervised learning techniques to explore how cryptocurrencies are affected by 24-hour and 7-day price changes. Using clustering algorithms, such as K-means, we group cryptocurrencies based on their price changes and analyze the clusters with Principal Component Analysis (PCA) to optimize feature reduction.
+This project uses Python and unsupervised learning techniques to analyze the effect of 24-hour and 7-day price changes on cryptocurrencies. By employing K-means clustering and Principal Component Analysis (PCA), we explore potential groupings of cryptocurrencies and assess the impact of feature reduction on clustering accuracy.
 
-* * *
-
-## Python Libearies
-
-- Python 3.12
-- Jupyter Notebook
-- Libraries: Pandas, scikit-learn, hvPlot, Plotly
-
-## File Structure
-    
-    
-    CryptoClustering/
-    │
-    ├── /Resource/crypto_market_data.csv
-    ├── Crypto_Clustering.ipynb
-    └── README.md
-    
 * * *
 
 ## Project Overview
 
-The goal of this challenge is to predict if cryptocurrencies are impacted by 24-hour or 7-day price changes. We'll use the following techniques and tools to achieve this:
+The primary goal of this project is to determine if cryptocurrencies can be grouped based on their 24-hour and 7-day price change behavior using unsupervised machine learning methods. The project involves:
 
-- **Unsupervised Learning (K-means Clustering)**
-- **Principal Component Analysis (PCA)**
-- **Data Normalization with `StandardScaler()`**
+- **Data Normalization** using `StandardScaler()`
+- **Clustering** using K-means algorithm
+- **Dimensionality Reduction** using Principal Component Analysis (PCA)
+- **Visualization and Comparison** of clusters before and after applying PCA
 * * *
 
-## Instructions
+## Data and Tools
 
-### 1. Data Preparation
+### Files Used
 
-- **Load the Data**: Load the `crypto_market_data.csv` file into a Pandas DataFrame.
-- **Explore the Data**: Generate summary statistics and plot the data to visualize any preliminary insights.
-- **Standardize the Data**: Normalize the data using the `StandardScaler()` module from scikit-learn to ensure that each feature contributes equally to the analysis.
+- `crypto_market_data.csv`: Contains the cryptocurrency market data, including price changes over 24 hours and 7 days.
+- `Crypto_Clustering.ipynb`: Jupyter notebook that contains the implementation of the clustering analysis.
 
-### 2. Elbow Method to Determine Optimal k
+### Libraries Required
 
-- **Inertia Calculation**: Use the elbow method to calculate the inertia for k-values ranging from 1 to 11.
-- **Plot the Elbow Curve**: Plot the inertia values to visually determine the best value for k.
-- **Best k Value**: Record and discuss the optimal value for k based on the elbow curve.
+- Pandas
+- Scikit-learn
+- hvPlot
+- Plotly
+- Matplotlib   
 
-### 3. K-Means Clustering with the Scaled Data
+* * *
 
-- **Initialize K-Means**: Fit the K-means model with the best k value.
-- **Predict Clusters**: Use the scaled data to predict cluster groupings.
-- **Scatter Plot Visualization**: Create a scatter plot with `hvPlot`, setting the x-axis as `"price_change_percentage_24h"` and the y-axis as `"price_change_percentage_7d"`. Add the cryptocurrency name to the `hover_cols` parameter to enhance identification.
+## Steps and Instructions
 
-### 4. Feature Optimization with PCA
+### 1. Data Loading and Preparation
 
-- **PCA with 3 Components**: Use PCA to reduce the features to 3 principal components.
-- **Explained Variance**: Retrieve the explained variance to determine how much information each principal component holds.
-- **New PCA DataFrame**: Create a new DataFrame with the reduced PCA data and set the index to `coin_id`.
-- **Best k Using PCA Data**: Apply the elbow method again to find the best k value for the reduced data.
+- **Load the Data**: The dataset is loaded into a Pandas DataFrame from the file `crypto_market_data.csv`.
+- **Summary Statistics**: Initial exploration of the dataset is performed by generating summary statistics.
+- **Data Normalization**: The data is scaled using `StandardScaler()` to ensure all features have equal weight in the clustering process.
 
-### 5. K-Means Clustering with the PCA Data
+### 2. Finding the Best Value for _k_ Using the Elbow Method
 
-- **K-Means with PCA**: Fit and predict the clusters using the PCA DataFrame.
-- **Scatter Plot with PCA**: Visualize the clusters by creating a scatter plot with the principal components (`PC1`, `PC2`) and compare the cluster labels.
+- **Elbow Method**: We use the elbow method to determine the best number of clusters (_k_) by plotting the inertia values for _k_ ranging from 1 to 11.
+- **Optimal _k_ Value**: The plot is used to identify the optimal number of clusters, which was found to be **4**.
 
-### 6. Visualize and Compare Results
+### 3. K-means Clustering on the Scaled Data
 
-- **Composite Plot for Elbow Curves**: Use `hvPlot` to compare the elbow curves generated with the original scaled data and PCA data.
-- **Composite Plot for Clusters**: Compare the cryptocurrency clusters generated from both the original scaled data and the PCA-transformed data.
-- **Analysis**: Discuss the impact of reducing features on the cluster analysis.
+- **Cluster Cryptocurrencies**: Using the K-means algorithm with _k_=4, the cryptocurrencies are clustered based on their 24-hour and 7-day price change data.
+- **Visualization**: The clusters are visualized using `hvPlot`, where:
+    - **X-axis**: `"price_change_percentage_24h"`
+    - **Y-axis**: `"price_change_percentage_7d"`
+    - Each point is color-coded based on its cluster and labeled with the corresponding `coin_id` for easy identification.
+
+### 4. Dimensionality Reduction with PCA
+
+- **Principal Component Analysis (PCA)**: The features are reduced to 3 principal components using PCA to simplify the data while retaining as much variance as possible.
+- **Explained Variance**: We calculated the explained variance to determine how much information is preserved after reducing the dimensionality. The first three principal components explained approximately **89%** of the variance.
+- **New DataFrame**: A new DataFrame is created based on the 3 principal components, indexed by `coin_id`.
+
+### 5. Finding the Best Value for _k_ Using PCA
+
+- **Elbow Method (PCA)**: The elbow method is applied again using the reduced data to identify the optimal _k_ value for the PCA-transformed data. The optimal number of clusters remained **4**.
+- **Comparison**: We compared the optimal _k_ value obtained from the original scaled data and the PCA-reduced data.
+
+### 6. K-means Clustering with PCA Data
+
+- **Cluster Cryptocurrencies (PCA)**: The K-means algorithm is applied again using the PCA-reduced data to group the cryptocurrencies.
+- **Visualization**: The clusters are visualized in 2D using the first two principal components (`PC1`, `PC2`) as axes. The hover functionality displays the `coin_id` for each point.
+
+### 7. Comparison and Analysis
+
+- **Elbow Curve Comparison**: We compared the elbow curves of the original scaled data with the PCA-transformed data to analyze the impact of dimensionality reduction on clustering.
+- **Cluster Comparison**: We created composite plots to compare the clusters generated by the original scaled data versus the PCA-reduced data.
+- **Conclusion**: We assessed the impact of using fewer features on clustering accuracy and visual clarity. The clustering results were **similar**, indicating that PCA effectively reduced the data dimensionality without significant loss of information.
 * * *
 
 ## Results
 
-### Best Value for k
+### Best _k_ Value
 
-- After applying the elbow method, the optimal value for k was determined to be **4** using the scaled DataFrame and **4** using the PCA DataFrame.
+- The optimal number of clusters (_k_) for the original data is **4**.
+- After applying PCA, the optimal _k_ value was **4**. The results showed **similarity** in clustering behavior.
 
-### Impact of Feature Reduction
+### PCA Explained Variance
 
-- By using PCA, we reduced the dimensionality of the dataset while retaining **89.5%** of the total variance. The clustering results, however, showed **minimal/significant** differences when using fewer features, indicating that feature reduction through PCA can **simplify/improve** the clustering process without **much loss/any loss** of valuable information.
-* * *
+- The total explained variance from the 3 principal components is **89.5%**, indicating that the majority of the original information is retained.
+
+### Analysis of Feature Reduction
+
+- The PCA-reduced data allowed for simplified clustering while retaining most of the relevant information, which led to **minimal** differences in the clustering results.
 
 ## Conclusion
 
-This project highlights the power of unsupervised learning methods like K-means clustering and dimensionality reduction techniques like PCA in identifying patterns and groupings within large datasets, such as cryptocurrency price changes. Through this approach, we can make informed predictions about the behavior of cryptocurrencies in different time windows.
+This project demonstrates how unsupervised learning techniques, such as K-means clustering, and dimensionality reduction methods, such as PCA, can be effectively applied to cryptocurrency data to uncover underlying patterns and groupings. By comparing clustering results before and after dimensionality reduction, we found that PCA did not significantly impact the clustering performance, indicating that the reduced features still captured the essential information needed for effective clustering. This suggests that feature reduction through PCA can simplify the data without compromising the quality of the clustering results.
 
 Thanks for your time.
