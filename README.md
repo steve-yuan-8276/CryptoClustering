@@ -20,6 +20,7 @@ The primary goal of this project is to determine if cryptocurrencies can be grou
 
 - `crypto_market_data.csv`: Contains the cryptocurrency market data, including price changes over 24 hours and 7 days.
 - `Crypto_Clustering.ipynb`: Jupyter notebook that contains the implementation of the clustering analysis.
+- The hvplot charts generated in the project have been saved as HTML files and are stored in the Output_figure folder. Please check the preview in that folder.
 
 ### Libraries Required
 
